@@ -1,11 +1,13 @@
 package com.zybooks.workingwithdata
 
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 
 class CustomAdapter(private val dataSet: ArrayList<Pair<String, String>>) :
@@ -46,20 +48,35 @@ class CustomAdapter(private val dataSet: ArrayList<Pair<String, String>>) :
         viewHolder.nameTextView.removeTextChangedListener(viewHolder.nameWatcher)
         viewHolder.nameTextView.doAfterTextChanged {
             text ->
-            if (!text.isNullOrBlank()) {
-                dataSet[position] = Pair(text.toString(), dataSet[position].second)
+            if ( viewHolder.nameTextView.hasFocus()) {
+                if (!text.isNullOrBlank()) {
+                    dataSet[position] = Pair(text.toString(), dataSet[position].second)
+                }
             }
         }
-        viewHolder.nameTextView.text = dataSet[position].first
 
         viewHolder.numberTextView.removeTextChangedListener(viewHolder.numberWatcher)
         viewHolder.numberTextView.doAfterTextChanged {
                 text ->
-            if (!text.isNullOrBlank()) {
-                dataSet[position] = Pair(dataSet[position].first, text.toString())
+            if ( viewHolder.numberTextView.hasFocus()) {
+                if (!text.isNullOrBlank()) {
+                    dataSet[position] = Pair(dataSet[position].first, text.toString())
+                    this.notifyDataSetChanged()
+                }
             }
         }
+
+
+        var nameFocus = viewHolder.nameTextView.hasFocus()
+        var numberfocus = viewHolder.numberTextView.hasFocus()
+        viewHolder.nameTextView.clearFocus()
+        viewHolder.numberTextView.clearFocus()
+
+        viewHolder.nameTextView.text = dataSet[position].first
         viewHolder.numberTextView.text = dataSet[position].second
+
+        if (nameFocus ) viewHolder.nameTextView.requestFocus()
+        if (numberfocus) viewHolder.numberTextView.requestFocus()
     }
 
     // Return the size of your dataset (invoked by the layout manager)
