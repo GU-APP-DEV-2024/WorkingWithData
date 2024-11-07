@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
         var json = JSONArray()
         // Write each task on a separate line
-        for ((index, pair) in dataset.withIndex()) {
+        for (pair in dataset) {
             var newJSONObject = JSONObject()
             newJSONObject.put("name", pair.first)
             newJSONObject.put("number", pair.second)
@@ -133,6 +134,9 @@ class MainActivity : AppCompatActivity() {
             }
             return ret
         } catch ( e: FileNotFoundException ) { return ret }
+        catch (e: JSONException) {
+            return ret
+        }
 
 
     }
