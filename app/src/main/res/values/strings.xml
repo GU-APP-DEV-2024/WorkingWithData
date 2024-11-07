@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WorkingWithData</string>
     <string name="element_text">test</string>
+    <string name="sharedpref_amp_rw_files"><![CDATA[SharedPref & RW Files]]></string>
 </resources>
