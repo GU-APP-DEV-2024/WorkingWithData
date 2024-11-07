@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
+import java.io.FileNotFoundException
 import java.io.PrintWriter
 
 /*
@@ -104,15 +105,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFromFile(): ArrayList<Pair<String, String>> {
-        val inputStream = openFileInput("ContactList.txt")
-        val reader = inputStream.bufferedReader()
         var ret = arrayListOf<Pair<String, String>>()
-        // Append each task to stringBuilder
-        reader.forEachLine {
-            var splitLine = it.split(',')
-            ret.add(Pair(splitLine[0], splitLine[1]))
-        }
+        try {
+            val inputStream = openFileInput("ContactList.txt")
+            val reader = inputStream.bufferedReader()
 
-        return ret
+            // Append each task to stringBuilder
+            reader.forEachLine {
+                var splitLine = it.split(',')
+                ret.add(Pair(splitLine[0], splitLine[1]))
+            }
+            return ret
+        } catch ( e: FileNotFoundException ) { return ret }
+
+
     }
 }
