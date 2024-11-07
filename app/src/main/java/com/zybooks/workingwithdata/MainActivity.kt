@@ -2,7 +2,6 @@ package com.zybooks.workingwithdata
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         loadContacts.setOnClickListener {
             dataset.clear()
             dataset.addAll(loadFromFile())
+            customAdapter.notifyDataSetChanged()
         }
 
         var saveContacts = findViewById<Button>(R.id.saveContacts)
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         var addContact = findViewById<Button>(R.id.addContact)
         addContact.setOnClickListener {
             dataset += Pair("New Person","5555555555")
-            customAdapter.notifyDataSetChanged()
+            customAdapter.notifyItemInserted(dataset.size -1)
         }
 
         var clearContacts = findViewById<Button>(R.id.clear)
@@ -90,13 +91,13 @@ class MainActivity : AppCompatActivity() {
         val outputStream = openFileOutput("ContactList.txt", Context.MODE_PRIVATE)
         val writer = PrintWriter(outputStream)
 
-        var json = JSONObject()
+        var json = JSONArray()
         // Write each task on a separate line
         for ((index, pair) in dataset.withIndex()) {
             var newJSONObject = JSONObject()
             newJSONObject.put("name", pair.first)
             newJSONObject.put("number", pair.second)
-            json.put(index.toString(), newJSONObject)
+            json.put(newJSONObject)
             //writer.println(pair.first + "," + pair.second)
         }
         val jsonString = json.toString(3)
@@ -109,11 +110,26 @@ class MainActivity : AppCompatActivity() {
         try {
             val inputStream = openFileInput("ContactList.txt")
             val reader = inputStream.bufferedReader()
-
-            // Append each task to stringBuilder
+            // Code for reading in CSV File
+            // Has issues due to user adding commas breaking CSV format
+            /*// Append each task to stringBuilder
             reader.forEachLine {
                 var splitLine = it.split(',')
                 ret.add(Pair(splitLine[0], splitLine[1]))
+            }*/
+
+            // Code for reading in JSON File
+            val fileText = reader.readText() // Reads in file as one string.
+
+            val jsonArray = JSONArray(fileText) // Turns string into JSONObject
+            for (i in 0..jsonArray.length() - 1) {
+                var contact = jsonArray.get(i) as JSONObject // Returns object at position "key"
+
+                // pulls out the values from contact
+                var name = contact.getString("name")
+                var number = contact.getString("number")
+
+                ret.add(Pair(name, number))
             }
             return ret
         } catch ( e: FileNotFoundException ) { return ret }
