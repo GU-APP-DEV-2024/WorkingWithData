@@ -34,7 +34,7 @@ class NasaAPI : AppCompatActivity() {
             insets
         }
 
-        supportActionBar?.setTitle("WWD - NASA")
+        supportActionBar?.title = "WWD - NASA"
 
 
         startDateTextView = findViewById(R.id.dateTextView)
@@ -55,25 +55,25 @@ class NasaAPI : AppCompatActivity() {
             endDateEditText.isEnabled = countEditText.text.isEmpty()
         }
 
-        var rangeCheckBox = findViewById(R.id.rangeCheckBox) as CheckBox
+        val rangeCheckBox: CheckBox = findViewById(R.id.rangeCheckBox)
         rangeCheckBox.setOnClickListener {
             if (rangeCheckBox.isChecked ) {
                 endDateTextView.visibility = View.VISIBLE
                 endDateEditText.visibility = View.VISIBLE
-                startDateTextView.text = "Start"
+                startDateTextView.text = getString(R.string.start)
             } else {
                 endDateTextView.visibility = View.INVISIBLE
                 endDateEditText.visibility = View.INVISIBLE
-                startDateTextView.text = "Date"
+                startDateTextView.text = getString(R.string.date)
 
             }
         }
 
-        var searchButton:Button = findViewById(R.id.searchButton)
+        val searchButton:Button = findViewById(R.id.searchButton)
         searchButton.setOnClickListener {
             searchAPOD()
         }
-        var clearButton: Button = findViewById(R.id.clearButton)
+        val clearButton: Button = findViewById(R.id.clearButton)
         clearButton.setOnClickListener {
             clearEditTextFields()
         }
