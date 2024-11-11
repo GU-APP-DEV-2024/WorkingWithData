@@ -1,17 +1,15 @@
 package com.zybooks.workingwithdata
 
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(private val dataSet: ArrayList<Pair<String, String>>) :
-    RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class ContactCustomAdapter(private val dataSet: ArrayList<Pair<String, String>>) :
+    RecyclerView.Adapter<ContactCustomAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
