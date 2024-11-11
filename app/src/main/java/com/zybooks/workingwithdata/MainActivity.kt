@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var savedDataButton:Button
     lateinit var savedDataEditText:EditText
     lateinit var dataset: ArrayList<Pair<String, String>>
-    lateinit var customAdapter: CustomAdapter
+    lateinit var contactCustomAdapter: ContactCustomAdapter
 
     data class Contact(val name: String, val number:String)
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         loadContacts.setOnClickListener {
             dataset.clear()
             dataset.addAll(loadFromFile())
-            customAdapter.notifyDataSetChanged()
+            contactCustomAdapter.notifyDataSetChanged()
         }
 
         var saveContacts = findViewById<Button>(R.id.saveContacts)
@@ -70,22 +70,22 @@ class MainActivity : AppCompatActivity() {
         var addContact = findViewById<Button>(R.id.addContact)
         addContact.setOnClickListener {
             dataset += Pair("New Person","5555555555")
-            customAdapter.notifyItemInserted(dataset.size -1)
+            contactCustomAdapter.notifyItemInserted(dataset.size -1)
         }
 
         var clearContacts = findViewById<Button>(R.id.clear)
         clearContacts.setOnClickListener {
             dataset.clear()
-            customAdapter.notifyDataSetChanged()
+            contactCustomAdapter.notifyDataSetChanged()
         }
 
         //val dataset = arrayOf(Pair("Bob", "5553423334"), Pair("Susan", "5557841415"), Pair("Joe", "5554185545"))
         dataset = loadFromFile()
-        customAdapter = CustomAdapter(dataset)
+        contactCustomAdapter = ContactCustomAdapter(dataset)
 
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = customAdapter
+        recyclerView.adapter = contactCustomAdapter
     }
 
     private fun saveToFile() {
