@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.zybooks.workingwithdata.NasaAPI.ImageData
 import java.net.URL
 
 
-class ImageCustomAdapter(private val dataSet: ArrayList<Pair<String, String>>) :
+class ImageCustomAdapter(private val dataSet: ArrayList<ImageData>) :
     RecyclerView.Adapter<ImageCustomAdapter.ViewHolder>() {
 
     /**
@@ -42,10 +43,10 @@ class ImageCustomAdapter(private val dataSet: ArrayList<Pair<String, String>>) :
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
 
-        val url = URL(dataSet[position].first)
+        val url = URL(dataSet[position].url)
         Log.d("LOADING_IMAGE", url.toString())
         Glide.with(viewHolder.viewRef).load(url).into(viewHolder.imageView)
-        viewHolder.imageView.contentDescription = dataSet[position].second
+        viewHolder.imageView.contentDescription = dataSet[position].description
     }
 
 
