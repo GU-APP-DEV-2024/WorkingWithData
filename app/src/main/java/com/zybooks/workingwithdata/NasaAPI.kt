@@ -138,20 +138,7 @@ class NasaAPI : AppCompatActivity() {
         }
     }
 
-    // Processing request once returned.
-    // add new data to data set or
-    // repopulate dataset with new data.
-    // do not reassign the dataset a new list.
-    // alert Adapter of changes.
-    private fun processRequest(response: JSONArray) {
-        for (index in 0 .. response.length() - 1) {
-            var jsonObject = response.getJSONObject(index)
-            Log.d(TAG, "Response Element: ${jsonObject.getString("url")}, " +
-                    "${jsonObject.getString("date")}, " +
-                    "${jsonObject.getString("explanation")}")
 
-        }
-    }
 
     private fun clearEditTextFields() {
         countEditText.text.clear()
