@@ -15,7 +15,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 
@@ -108,8 +110,9 @@ class NasaAPI : AppCompatActivity() {
     // Create and make request
     // Create a new JsonObjectRequest that requests available subjects
     private fun searchAPOD() {
-        val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
-
+        // Building URL for request.
+        // logic here also ensures request is built correctly
+        // and to get the correct response format.
         var base_url = "https://api.nasa.gov/planetary/apod"
         var url = base_url +
                 "?thumbs=true&api_key=${BuildConfig.NASA_API_KEY}"
@@ -133,8 +136,6 @@ class NasaAPI : AppCompatActivity() {
                 return
             }
         }
-
-        // Make the request
     }
 
     // Processing request once returned.
@@ -145,7 +146,10 @@ class NasaAPI : AppCompatActivity() {
     private fun processRequest(response: JSONArray) {
         for (index in 0 .. response.length() - 1) {
             var jsonObject = response.getJSONObject(index)
-            Log.d(TAG, "Response Element: $jsonObject")
+            Log.d(TAG, "Response Element: ${jsonObject.getString("url")}, " +
+                    "${jsonObject.getString("date")}, " +
+                    "${jsonObject.getString("explanation")}")
+
         }
     }
 
