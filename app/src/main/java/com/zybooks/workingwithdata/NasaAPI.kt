@@ -45,7 +45,7 @@ class NasaAPI : AppCompatActivity() {
             insets
         }
 
-        supportActionBar?.title = "WWD - NASA"
+        supportActionBar?.title = "Working with NASA"
 
 
         startDateTextView = findViewById(R.id.dateTextView)
@@ -116,7 +116,9 @@ class NasaAPI : AppCompatActivity() {
     private fun searchAPOD() {
         val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
 
-        var url = "https://api.nasa.gov/planetary/apod?thumbs=true&api_key=${BuildConfig.NASA_API_KEY}"
+        var base_url = "https://api.nasa.gov/" +
+                "planetary/apod" +
+                "?thumbs=true&api_key=${BuildConfig.NASA_API_KEY}"
         // If there is count, try to convert, if worked, add count.
         if (countEditText.text.isNotEmpty()) {
             var count = countEditText.text.toString().toIntOrNull()
