@@ -84,6 +84,7 @@ class NasaAPI : AppCompatActivity() {
         searchButton.setOnClickListener {
             searchAPOD()
         }
+
         val clearButton: Button = findViewById(R.id.clearButton)
         clearButton.setOnClickListener {
             clearEditTextFields()
@@ -106,18 +107,11 @@ class NasaAPI : AppCompatActivity() {
 
     // Create and make request
     // Create a new JsonObjectRequest that requests available subjects
-    /*    val requestObj = JsonArrayRequest(
-            Request.Method.GET, url, null,
-            { response -> processRequest(response)},
-            { error -> Log.d(TAG, "Error: $error") })
-
-        // Add the request to the RequestQueue
-        queue.add(requestObj)*/
     private fun searchAPOD() {
         val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
 
-        var base_url = "https://api.nasa.gov/" +
-                "planetary/apod" +
+        var base_url = "https://api.nasa.gov/planetary/apod"
+        var url = base_url +
                 "?thumbs=true&api_key=${BuildConfig.NASA_API_KEY}"
         // If there is count, try to convert, if worked, add count.
         if (countEditText.text.isNotEmpty()) {
@@ -134,7 +128,7 @@ class NasaAPI : AppCompatActivity() {
                 var date = startDateEditText.text.toString()
                 url += "&start_date=$date"
                 url += "&end_date=$date"
-            } else {
+            } else { // no count or date, request may return one item instead of array.
                 Toast.makeText(this, "Please enter count or date", Toast.LENGTH_LONG).show()
                 return
             }
