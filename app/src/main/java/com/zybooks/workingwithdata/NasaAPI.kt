@@ -147,9 +147,9 @@ class NasaAPI : AppCompatActivity() {
     }
 
     private fun processRequest(response: JSONArray) {
-        Log.d(TAG, response.toString())
         for (index in 0 .. response.length() - 1) {
             var jsonObject = response.getJSONObject(index)
+            Log.d(TAG, jsonObject.toString())
             var url = jsonObject.getString("url")
             var explanation = jsonObject.getString("explanation")
             imageDataSet.add(ImageData(url, explanation))
