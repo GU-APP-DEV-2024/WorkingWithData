@@ -104,7 +104,6 @@ class NasaAPI : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = imageCustomAdapter
-
     }
 
     // Create and make request
@@ -119,15 +118,15 @@ class NasaAPI : AppCompatActivity() {
         // If there is count, try to convert, if worked, add count.
         if (countEditText.text.isNotEmpty()) {
             var count = countEditText.text.toString().toIntOrNull()
-            if ( count != null ) url += "&count=$count"
+            if (count != null) url += "&count=$count"
         } else {
             // no count, maybe date or date range
-            if ( startDateEditText.text.isNotEmpty() && endDateEditText.text.isNotEmpty()) {
+            if (startDateEditText.text.isNotEmpty() && endDateEditText.text.isNotEmpty()) {
                 var start_date = startDateEditText.text.toString()
                 var end_date = endDateEditText.text.toString()
                 url += "&start_date=$start_date"
                 url += "&end_date=$end_date"
-            } else if ( startDateEditText.text.isNotEmpty() ) {
+            } else if (startDateEditText.text.isNotEmpty()) {
                 var date = startDateEditText.text.toString()
                 url += "&start_date=$date"
                 url += "&end_date=$date"
@@ -136,8 +135,27 @@ class NasaAPI : AppCompatActivity() {
                 return
             }
         }
+
+        val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
+
+        val requestObj = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            { response -> processRequest(response) },
+            { error -> Log.d(TAG, "Error: $error") })
+
+        queue.add(requestObj)
     }
 
+    private fun processRequest(response: JSONArray) {
+        Log.d(TAG, response.toString())
+        for (index in 0 .. response.length() - 1) {
+            var jsonObject = response.getJSONObject(index)
+            var url = jsonObject.getString("url")
+            var explanation = jsonObject.getString("explanation")
+            imageDataSet.add(ImageData(url, explanation))
+        }
+        imageCustomAdapter.notifyDataSetChanged()
+    }
 
 
     private fun clearEditTextFields() {
